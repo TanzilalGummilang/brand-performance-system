@@ -6,6 +6,8 @@ import { scrapeBtsData, type BtsData } from './scraper.service';
 interface Product {
   original_id: string;
   name: string;
+  category: string;
+  image: string;
   price: number;
   source: string;
 }
@@ -15,7 +17,7 @@ async function saveToDb(products: Product[]) {
     products.map((p) =>
       prismaClient.product.upsert({
         where: { original_id: p.original_id },
-        update: { name: p.name, price: p.price },
+        update: { name: p.name, price: p.price, category: p.category, image: p.image },
         create: p,
       })
     )
@@ -32,6 +34,8 @@ export async function syncProducts() {
     const fsaProductSanitized = fsaProductRaw.map((p: FsaProduct) => ({
       original_id: `fsa-${p.id}`,
       name: p.title,
+      category: p.category,
+      image: p.image,
       price: convertToIdr(p.price, 'USD'),
       source: 'Public API',
     }));
@@ -39,6 +43,8 @@ export async function syncProducts() {
     const btsDataSanitized = btsDataRaw.map((b: BtsData) => ({
       original_id: `bts-${b.original_id}`,
       name: b.name,
+      category: b.category,
+      image: b.image,
       price: b.price,
       source: 'Web Scraping',
     }));

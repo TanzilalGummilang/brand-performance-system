@@ -6,6 +6,8 @@ import { btsUrl } from '../lib/constants';
 export interface BtsData {
   original_id: string;
   name: string;
+  category: string;
+  image: string;
   price: number;
   source: string;
 }
@@ -29,15 +31,19 @@ export async function scrapeBtsData(): Promise<BtsData[]> {
     productPods.each((_, element) => {
       const title = $(element).find('h3 a').attr('title') as string;
       const priceRaw = $(element).find('.price_color').text();
+      const image = $(element).find('img').attr('src') as string;
 
-      if (!title || !priceRaw) return;
+      if (!title || !priceRaw || !image) return;
 
       const priceNum = parseFloat(priceRaw.replace('£', ''));
       const slug = title.toLowerCase().match(/[a-z0-9]+/g)?.join('-') as string;
+      const imageUrl = `${btsUrl}/${image}`;
 
       books.push({
         original_id: slug,
         name: title,
+        category: 'Book',
+        image: imageUrl,
         price: convertToIdr(priceNum, 'GBP'),
         source: 'Web Scraping',
       });

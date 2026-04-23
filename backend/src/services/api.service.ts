@@ -4,6 +4,8 @@ import { fsaUrl } from '../lib/constants';
 export interface FsaProduct {
   id: number;
   title: string;
+  category: string;
+  image: string;
   price: number;
 }
 
