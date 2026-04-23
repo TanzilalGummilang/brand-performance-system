@@ -1,11 +1,11 @@
 import express from 'express';
+import productRoutes from './routes/product.route';
+import { appConfig } from './lib/constants';
+
 const app = express();
-const port = 3000;
+app.use(express.json());
+app.use('/api/products', productRoutes);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-})
+app.listen(appConfig.port, () => {
+  console.log(`Server running on ${appConfig.url}`);
+});
