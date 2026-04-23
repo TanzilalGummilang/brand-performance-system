@@ -17,5 +17,7 @@ export const appConfig = {
   url: process.env.APP_URL ?? `http://${appHost}:${appPort}` as string
 }
 
+export const corsOrigin = process.env.CORS_ORIGIN ?? '' as string;
+
 export const fsaUrl = process.env.FAKE_STORE_API_URL ?? '' as string;
 export const btsUrl = process.env.BOOKS_TO_SCRAPE_URL ?? '' as string;
